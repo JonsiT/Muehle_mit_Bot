@@ -20,6 +20,7 @@ StartWindow::~StartWindow()
 }
 
 void StartWindow::Modi(int a){
+    // Mainwindow wird aufgerufen, je nach Auswahl mit oder ohne Bot
     close();
     mainwindow = new MainWindow(this);
     mainwindow->bot = a;

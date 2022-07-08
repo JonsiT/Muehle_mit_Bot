@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     // Windowname festlegen
-    MainWindow::setWindowTitle("Mühle");
+    MainWindow::setWindowTitle("Muehle");
     // Appicon
     QApplication::setWindowIcon(QIcon(":/images/Stein_braun.png"));
     // 24 ist ein Alibiwert
@@ -47,6 +47,7 @@ void MainWindow::on_Beenden_clicked()
 {
     QApplication::quit();
 
+    // Spielstand wird in eine Datei abgespeichert
     QFile file("Spielergebnis.txt");
     if(!file.open(QIODevice::ReadWrite))
     {
@@ -73,11 +74,11 @@ void MainWindow::on_Beenden_clicked()
 void MainWindow::on_Resetten_clicked(){
 
     for (int e=0; e<=23; e++){
-          // Felder werden auf schwarz zurückgesetzt
+          // Felder werden auf schwarz zurueckgesetzt
           QPushButton *field = findChild<QPushButton*>("Feld_" +QString::number(e));
           field->setStyleSheet("QPushButton { border: 1px solid black; background-color: black;}\n");
           field->setEnabled(true);
-          // Werte der Felder werden auf 0 zurückgesetzt
+          // Werte der Felder werden auf 0 zurueckgesetzt
           Status[e] = 0;
     }
 
@@ -85,14 +86,14 @@ void MainWindow::on_Resetten_clicked(){
     ui->background_Spieler_1->setStyleSheet("QFrame#background_Spieler_1{border: 2px solid red;}");
     ui->background_Spieler_2->setStyleSheet("QFrame#background_Spieler_2{border: none;}");
 
-    // Variablen werden zurückgesetzt
+    // Variablen werden zurueckgesetzt
 
-    // Zählvariablen
+    // Zaehlvariablen
     i = 0;
     bot_anzahl = 0;
     anzahl_verfuegbar = 0;
 
-    // zählt die Züge
+    // zaehlt die Zuege
     count = 0;
 
     // gibt an welcher Spieler am Zug ist
@@ -102,7 +103,7 @@ void MainWindow::on_Resetten_clicked(){
     number_1 = 0;
     number_2 = 0;
 
-    // bringt zusätzliche Abläufe ins Spiel
+    // bringt zusaetzliche Ablaeufe ins Spiel
     auswahl = 0;
 
     // Wie viele Steine der aktuelle Spieler hat
@@ -120,6 +121,8 @@ void MainWindow::on_Resetten_clicked(){
 
 bool MainWindow::bewegungsfreiheit(int a){
 
+                // Abfrage, ob ein Stein vertikal oder horizontal um ein Feld bewegt werden kann
+
                 if(Status[array_be[a][0]] == 0 || Status[array_be[a][1]] == 0 || Status[array_be[a][2]] == 0 || Status[array_be[a][3]] == 0){
                     return true;
                 }else{
@@ -129,7 +132,7 @@ bool MainWindow::bewegungsfreiheit(int a){
 
 void MainWindow::bewegung_empty(int a){
 
-    // Durchläuft alle Felder
+    // Durchlaeuft alle Felder
     for(int p = 0; p <= 23; p++){
         QPushButton *field = findChild<QPushButton*>("Feld_" +QString::number(p));
         // Setzt Feld false (Feld kann nicht mehr gecklickt werden), wenn Feld 1 oder 2 ist und Feld nicht erreichbar ist (mehr als ein Feld weg ist)
@@ -173,6 +176,7 @@ bool MainWindow::muehle(int a){
 }
 
 void MainWindow::enable(int a){
+    // a legt die Felder fest, die enabled werden sollen, der Rest wird disabled
     for(int u = 0; u <= 23; u++){
         QPushButton *field = findChild<QPushButton*>("Feld_" +QString::number(u));
         if(Status[u] == a){
@@ -185,17 +189,17 @@ void MainWindow::enable(int a){
 
 void MainWindow::freischalten(){
 
-    // Solange die Züge größer als 18 sind (die Anfangsphase übersprungen worde ist) und der Gegner mehr als 3 Steine besitzt
+    // Solange die Zuege groeßer als 18 sind (die Anfangsphase uebersprungen worden ist) und der Gegner mehr als 3 Steine besitzt
     if(count >=18 && state_gegner > 3){
 
-        // Es werden die Steine des Gegners, also für den nächsten Zug, freigeschalten die bewegt werden können
-        // Es wird geschaut, ob auf dem Feld der Stein des Gegners liegt und, ob dieser in seiner Range sich bewegen könnte
+        // Es werden die Steine des Gegners, also fuer den naechsten Zug, freigeschalten die bewegt werden koennen
+        // Es wird geschaut, ob auf dem Feld der Stein des Gegners liegt und, ob dieser in seiner Range sich bewegen koennte
     for(int o = 0; o <= 23; o++){
         QPushButton *field_1 = findChild<QPushButton*>("Feld_" + QString::number(o));
         if(zuege != 0){
             if(Status[o] == 1 && bewegungsfreiheit(o) == true){
                 field_1->setEnabled(true);
-                // Grün werden die Steine bewegt, die sich bewegen könnten
+                // Gruen werden die Steine bewegt, die sich bewegen koennten
                 field_1->setStyleSheet("QPushButton { image: url(:/images/Stein_braun.png);background-color:none;min-height: 60px;max-height: 60px;min-width: 60px;max-width: 60px; border: 2px solid green}");
             }else{
                 if(Status[o] == 2){
@@ -220,7 +224,7 @@ void MainWindow::freischalten(){
     }
     // kommt zum Einsatz, wenn der Gegner == 3 Steine hat
     else{
-        // Es werden die Steine des Gegners, also für den nächsten Zug, freigeschalten die bewegt werden können
+        // Es werden die Steine des Gegners, also fuer den naechsten Zug, freigeschalten die bewegt werden koennen
         // Hierbei spielt, auf Grund der Sprungphase, die bewegungsfreiheit keine Rolle
         for(int o = 0; o <= 23; o++){
             QPushButton *field_1 = findChild<QPushButton*>("Feld_" + QString::number(o));
@@ -255,7 +259,7 @@ void MainWindow::freischalten_bot(){
 
     // aus der Setzphase draußen und Gegner mehr als 3 Steine
     // gleiche Funktion wie freischalten, nur dass es sich ausschließlich auf Spieler 1 bezieht
-    // Der Bot erfährt andere Auswahlkriterien, wie welcher Stein ausgewählt wird
+    // Der Bot erfaehrt andere Auswahlkriterien, wie welcher Stein ausgewaehlt wird
     if(count >= 17 && state_gegner > 3){
     for(int o = 0; o <= 23; o++){
         QPushButton *field_1 = findChild<QPushButton*>("Feld_" + QString::number(o));
@@ -338,7 +342,7 @@ void MainWindow::Programm_2_Spieler(){
 
     if(count <= 17){
 
-        // Das ausgewählte Feld brown_stonesd mit einer Nummer versehen und vorerst für weitere Eingaben gesperrt
+        // Das ausgewaehlte Feld brown_stonesd mit einer Nummer versehen und vorerst fuer weitere Eingaben gesperrt
         if(zuege == 0){
             Status[number_1] = 1;
             buttonSender_1->setStyleSheet("QPushButton { image: url(:/images/Stein_braun.png);background-color:none;min-height: 60px;max-height: 60px;min-width: 60px;max-width: 60px;}");
@@ -350,7 +354,7 @@ void MainWindow::Programm_2_Spieler(){
         // button vorerst außer Kraft setzen
         buttonSender_1->setEnabled(false);
 
-        // Setzt die Felder frei, die als nächstes angeclickt werden können
+        // Setzt die Felder frei, die als naechstes angeclickt werden koennen
         if(count == 17){
             for(int o = 0; o <= 23; o++){
                 QPushButton *field_1 = findChild<QPushButton*>("Feld_" + QString::number(o));
@@ -379,7 +383,7 @@ void MainWindow::Programm_2_Spieler(){
         brown_stones = 0;
         black_stones = 0;
 
-        // zählt wie viele Felder von uns und dem Gegner noch auf dem Feld sind
+        // zaehlt wie viele Felder von uns und dem Gegner noch auf dem Feld sind
         for(int a = 0; a <= 23; a++){
             if(Status[a] == 1){
                 brown_stones++;
@@ -397,7 +401,7 @@ void MainWindow::Programm_2_Spieler(){
         }
 
 
-     // Solange die Felder des Spielers größer als 3 sind, dann sind brown_stones in Stage 1
+     // Solange die Felder des Spielers groeßer als 3 sind, dann sind brown_stones in Stage 1
      if(state > 3){
 
         if(auswahl == 0){
@@ -410,18 +414,18 @@ void MainWindow::Programm_2_Spieler(){
             }
 
             /*
-             * Button ausgewählt, nun alle sperren, die nicht für die Bewegung infrage kommen
+             * Button ausgewaehlt, nun alle sperren, die nicht fuer die Bewegung infrage kommen
              */
 
             bewegung_empty(number_1);
 
-            // Für den Wechsel von Buttons muss die erste Buttonnummer weitergegeben werden
+            // Fuer den Wechsel von Buttons muss die erste Buttonnummer weitergegeben werden
             number_2 = number_1;
             auswahl++;
 
         }else if(auswahl == 1){
             /*
-             * Wechselbutton auswählen
+             * Wechselbutton auswaehlen
              */
 
             // number_2 ist der vorherige Button
@@ -442,7 +446,7 @@ void MainWindow::Programm_2_Spieler(){
                 buttonSender_1->setStyleSheet("QPushButton { image: url(:/images/Stein_schwarz.png);background-color:none;min-height: 60px;max-height: 60px;min-width: 60px;max-width: 60px;}");
             }
 
-            // es wird geschaut, ob sich durch das Bewegen eine Mühle gebildet hat
+            // es wird geschaut, ob sich durch das Bewegen eine Muehle gebildet hat
             if(muehle(number_1) == true){
                 enable(Spieler_2);
                 auswahl++;
@@ -471,7 +475,7 @@ void MainWindow::Programm_2_Spieler(){
          * Stage 2 Start
          */
 
-     // Wenn nur noch 3 Steine des Spielers übrig sind kommt dieser in die 2 Stage (Endphase)
+     // Wenn nur noch 3 Steine des Spielers uebrig sind kommt dieser in die 2 Stage (Endphase)
         else if(state == 3){
             if(auswahl == 0){
 
@@ -482,7 +486,7 @@ void MainWindow::Programm_2_Spieler(){
                 }
 
                 /*
-                 * Button ausgewählt, nun alle sperren, die nicht für die Bewegung infrage kommen
+                 * Button ausgewaehlt, nun alle sperren, die nicht fuer die Bewegung infrage kommen
                  */
 
                 // Alle freimachen außer die leeren Felder
@@ -493,7 +497,7 @@ void MainWindow::Programm_2_Spieler(){
 
             }else if(auswahl == 1){
                 /*
-                 * Wechselbutton auswählen
+                 * Wechselbutton auswaehlen
                  */
 
                 // number_2 ist der vorherige Button
@@ -556,7 +560,7 @@ if(auswahl == 0){
     }
 
     count ++;
-}else{/* Überspringen, da zwei clicks vom Spieler notwendig ist */}
+}else{/* ueberspringen, da zwei clicks vom Spieler notwendig ist */}
 }
 
 void MainWindow::Programm_1_Spieler(){
@@ -584,7 +588,7 @@ void MainWindow::Programm_1_Spieler(){
 
     if(count <= 16){
 
-        // Das ausgewählte Feld brown_stonesd mit einer Nummer versehen und vorerst für weitere Eingaben gesperrt
+        // Das ausgewaehlte Feld brown_stonesd mit einer Nummer versehen und vorerst fuer weitere Eingaben gesperrt
 
             Status[number_1] = 1;
             buttonSender_1->setStyleSheet("QPushButton { image: url(:/images/Stein_braun.png);background-color:none;min-height: 60px;max-height: 60px;min-width: 60px;max-width: 60px;}");
@@ -663,7 +667,7 @@ void MainWindow::Programm_1_Spieler(){
                 buttonSender_1->setStyleSheet("QPushButton { image: url(:/images/Stein_braun.png);background-color:none;min-height: 60px;max-height: 60px;min-width: 60px;max-width: 60px; border: 2px solid red}");
 
                /*
-                * Button ausgewählt, nun alle sperren, die nicht für die Bewegung infrage kommen
+                * Button ausgewaehlt, nun alle sperren, die nicht fuer die Bewegung infrage kommen
                 */
                 bewegung_empty(number_1);
 
@@ -673,7 +677,7 @@ void MainWindow::Programm_1_Spieler(){
             }else if(auswahl == 1){
 
             /*
-             * Wechselbutton auswählen
+             * Wechselbutton auswaehlen
              */
 
             // number_2 ist der vorherige Button
@@ -688,9 +692,9 @@ void MainWindow::Programm_1_Spieler(){
                 // jetziger Button wird mit dem vorherigen Button getauscht
                 buttonSender_1->setStyleSheet("QPushButton { image: url(:/images/Stein_braun.png);background-color:none;min-height: 60px;max-height: 60px;min-width: 60px;max-width: 60px;}");
 
-                // hat sich eine Mühle gebildet
+                // hat sich eine Muehle gebildet
             if(muehle(number_1) == true){
-                // bei Mühle darf der Spieler einen beliebigen Stein des Gegners entfernen
+                // bei Muehle darf der Spieler einen beliebigen Stein des Gegners entfernen
                 enable(Spieler_2); // Nur die Steine des Gegners freischalten
                 auswahl++;
             }else{
@@ -700,7 +704,7 @@ void MainWindow::Programm_1_Spieler(){
 
 
         }else if(auswahl == 2){
-            // Den gegnersichen Stein ausgewählt und auf null gesetzt (gelöscht)
+            // Den gegnersichen Stein ausgewaehlt und auf null gesetzt (geloescht)
             buttonSender_1->setStyleSheet("QPushButton { image: none}");
             Status[number_1] = 0;
             auswahl = 0;
@@ -717,7 +721,7 @@ void MainWindow::Programm_1_Spieler(){
          * Stage 2 Start
          */
 
-        // Wenn nur noch 3 Steine des Spielers übrig sind (Endphase)
+        // Wenn nur noch 3 Steine des Spielers uebrig sind (Endphase)
         else if(state == 3){
 
             if(auswahl == 0){
@@ -729,7 +733,7 @@ void MainWindow::Programm_1_Spieler(){
                 }
 
                 /*
-                 * Button ausgewählt, nun alle sperren, die nicht für die Bewegung infrage kommen
+                 * Button ausgewaehlt, nun alle sperren, die nicht fuer die Bewegung infrage kommen
                  */
 
                 enable(0); // Der Stein kann in der Endphase auf jedes leere Feld springen
@@ -740,7 +744,7 @@ void MainWindow::Programm_1_Spieler(){
             }else if(auswahl == 1){
 
                 /*
-                 * Wechselbutton auswählen
+                 * Wechselbutton auswaehlen
                  */
 
                 // number_2 ist der vorherige Button
@@ -791,7 +795,7 @@ void MainWindow::Programm_1_Spieler(){
 // Bot
     if(auswahl == 0){
         //Wenn Bot am Zug ist
-        // Zähler weiterführen, für fortlaufendes Programm und Übersicht relevant
+        // Zaehler weiterfuehren, fuer fortlaufendes Programm und uebersicht relevant
         count ++;
 
         zuege = count%2;
@@ -817,7 +821,7 @@ void MainWindow::Programm_1_Spieler(){
         }
 
 
-        // Wenn weniger als 17 Züge gespielt wurden befinden wir uns noch in Stage 1
+        // Wenn weniger als 17 Zuege gespielt wurden befinden wir uns noch in Stage 1
             if(count <= 17){
                 bot_anzahl = 0;
                 int bot_array[23]{0};
@@ -830,7 +834,7 @@ void MainWindow::Programm_1_Spieler(){
                     }
                 }
 
-                // Zufällig ein Feld auswählen
+                // Zufaellig ein Feld auswaehlen
                 int random_wert;
                 int wi = bot_anzahl;
                 random_wert = rand() % wi;
@@ -850,13 +854,13 @@ void MainWindow::Programm_1_Spieler(){
             }
 
 
-            // Wenn mehr als 17 Züge gespielt worden sind befinden wir uns unweigerlich in Stage 2
+            // Wenn mehr als 17 Zuege gespielt worden sind befinden wir uns unweigerlich in Stage 2
            else if(count > 17){
                 bot_anzahl = 0;
                 int bot_array[23]{0};
 
                 if(state > 3){
-                    // Abfragen, welche Steine zum Bot gehört
+                    // Abfragen, welche Steine zum Bot gehoert
 
                     for(int o = 0; o <= 23; o++){
                         if(Status[o] == 2){
@@ -869,7 +873,7 @@ void MainWindow::Programm_1_Spieler(){
                     int bot_array_2[23]{0};
 
                     for(int o = 0; o < bot_anzahl; o++){
-                    // Welche Steine können bewegt werden
+                    // Welche Steine koennen bewegt werden
                         if(bewegungsfreiheit(bot_array[o]) == true){
                                 bot_array_2[i] = bot_array[o];
                                 i++;
@@ -877,17 +881,17 @@ void MainWindow::Programm_1_Spieler(){
                     }
 
 
-                    // Stein auswählen
+                    // Stein auswaehlen
 
                     int random_wert_2;
                     random_wert_2 = rand() % i;
 
-                    // der vom Bot ausgewählte Stein wird daraufhin resettet
+                    // der vom Bot ausgewaehlte Stein wird daraufhin resettet
                     QPushButton *field_2 = findChild<QPushButton*>("Feld_" + QString::number(bot_array_2[random_wert_2]));
                     field_2->setStyleSheet("QPushButton { image: none}");
                     Status[bot_array_2[random_wert_2]] = 0;
 
-                    // Abfragen, wohin der Stein bewegt werden können
+                    // Abfragen, wohin der Stein bewegt werden koennen
 
                     bewegung_empty_bot(bot_array_2[random_wert_2]);
 
@@ -897,14 +901,14 @@ void MainWindow::Programm_1_Spieler(){
                     int random_wert_3;
                     random_wert_3 = rand() % anzahl_verfuegbar;
 
-                    // Bewegung des Steins und der Parametern an die gewünschte Stelle
+                    // Bewegung des Steins und der Parametern an die gewuenschte Stelle
                     QPushButton *field_3 = findChild<QPushButton*>("Feld_" + QString::number(bot_array_3[random_wert_3]));
                     field_3->setStyleSheet("QPushButton { image: url(:/images/Stein_schwarz.png);background-color:none;min-height: 60px;max-height: 60px;min-width: 60px;max-width: 60px}");
                     Status[bot_array_3[random_wert_3]] = 2;
 
-                    // Wenn sich zufällig eine Mühle ergibt
+                    // Wenn sich zufaellig eine Muehle ergibt
                     if(muehle(bot_array_3[random_wert_3]) == true){
-                        // mögliche Steine des Gegners werden lokalisiert
+                        // moegliche Steine des Gegners werden lokalisiert
                         int bot_array_5[23] {0};
                         i = 0;
                         for(int o = 0; o <= 23; o++){
@@ -914,7 +918,7 @@ void MainWindow::Programm_1_Spieler(){
                             }
                         }
 
-                        // Random Stein des Gegners wird ausgewählt
+                        // Random Stein des Gegners wird ausgewaehlt
                         int random_wert_speil;
                         random_wert_speil = rand() % i;
 
@@ -934,12 +938,12 @@ void MainWindow::Programm_1_Spieler(){
                 }
 
                 else if(state == 3){
-                        // Abfragen, welche Steine bewegt werden können
+                        // Abfragen, welche Steine bewegt werden koennen
                         i = 0;
                         int bot_array_4[23]{0};
 
                         for(int o = 0; o <= 23; o++){
-                            // Welche Steine gehören dem Bot
+                            // Welche Steine gehoeren dem Bot
                             if(Status[o] == 2){
                                 bot_array_4[i] = o;
                                 i++;
@@ -947,12 +951,12 @@ void MainWindow::Programm_1_Spieler(){
                         }
 
 
-                        // Stein auswählen
+                        // Stein auswaehlen
 
                         int random_wert_2;
                         random_wert_2 = rand() % i;
 
-                        // Abfragen, wohin der Stein bewegt werden können
+                        // Abfragen, wohin der Stein bewegt werden koennen
                         i=0;
                         int bot_array_3[23]{0};
                         for(int o = 0; o <= 23; o++){
@@ -963,7 +967,7 @@ void MainWindow::Programm_1_Spieler(){
                             }
                         }
 
-                        // Alte Position löschen
+                        // Alte Position loeschen
 
                         QPushButton *field_2 = findChild<QPushButton*>("Feld_" + QString::number(bot_array_4[random_wert_2]));
                         field_2->setStyleSheet("QPushButton { image: none}");
@@ -980,9 +984,9 @@ void MainWindow::Programm_1_Spieler(){
                         field_3->setStyleSheet("QPushButton { image: url(:/images/Stein_schwarz.png);background-color:none;min-height: 60px;max-height: 60px;min-width: 60px;max-width: 60px}");
                         Status[bot_array_3[random_wert_3]] = 2;
 
-                        // Wenn sich zufällig eine Mühle ergibt
+                        // Wenn sich zufaellig eine Muehle ergibt
                         if(muehle(bot_array_3[random_wert_3]) == true){
-                            // mögliche Steine des Gegners werden lokalisiert
+                            // moegliche Steine des Gegners werden lokalisiert
                             int bot_array_5[23] {0};
                             i = 0;
                             for(int o = 0; o <= 23; o++){
@@ -992,7 +996,7 @@ void MainWindow::Programm_1_Spieler(){
                                 }
                             }
 
-                            // Random Stein des Gegners wird ausgewählt
+                            // Random Stein des Gegners wird ausgewaehlt
                             int random_wert_speil;
                             random_wert_speil = rand() % i;
 
@@ -1035,7 +1039,7 @@ if(auswahl == 0){
 
     count++;
 
-}else{/* Überspringen, da zwei clicks vom Spieler notwendig ist */ }
+}else{/* ueberspringen, da zwei clicks vom Spieler notwendig ist */ }
 
 
 
