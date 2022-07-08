@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>StartWindow</class>
+ <widget class="QDialog" name="StartWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>840</width>
+    <height>550</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QDialog{
+min-height: 550px;
+min-width: 840px;
+max-height:550px;
+max-width: 840px;
+background-color: white;
+}
+
+
+QPushButton#Spieler_1{
+min-height: 100px;
+min-width: 350px;
+max-height:100px;
+max-width: 350px;
+background-color: rgb(237, 237, 237);
+color: black;
+border-radius: 5px;
+border: 1px solid black;
+font-size: 25px;
+}
+
+QPushButton#Spieler_1:hover{
+background-color: rgb(185,182,185);
+color: white;
+border-radius: 5px;
+min-height: 35px;
+min-width: 70px;
+max-height: 35px;
+max-width: 70px;
+}
+
+QPushButton#Spieler_2{
+min-height: 100px;
+min-width: 350px;
+max-height:100px;
+max-width: 350px;
+background-color: rgb(237, 237, 237);
+color: black;
+border-radius: 5px;
+border: 1px solid black;
+font-size: 25px;
+}
+
+QPushButton#Spieler_2:hover{
+background-color: rgb(185,182,185);
+color: white;
+border-radius: 5px;
+min-height: 35px;
+min-width: 70px;
+max-height: 35px;
+max-width: 70px;
+}</string>
+  </property>
+  <widget class="QPushButton" name="Spieler_1">
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>130</y>
+     <width>352</width>
+     <height>102</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <property name="text">
+    <string>1 Spieler</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Spieler_2">
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>300</y>
+     <width>352</width>
+     <height>102</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>2 Spieler</string>
+   </property>
+  </widget>
+  <zorder>Spieler_2</zorder>
+  <zorder>Spieler_1</zorder>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

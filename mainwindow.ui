@@ -47,7 +47,7 @@ background-color: white;
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">QPushButton{
+     <string notr="true">QPushButton#Beenden{
 background-color: grey;
 color: white;
 border: 1px solid black;
@@ -57,7 +57,19 @@ min-width: 70px;
 max-height: 35px;
 max-width: 70px;
 }
-QPushButton:hover{
+
+QPushButton#Resetten{
+background-color: grey;
+color: white;
+border: 1px solid black;
+border-radius: 5px;
+min-height: 35px;
+min-width: 70px;
+max-height: 35px;
+max-width: 70px;
+}
+
+QPushButton#Beenden:hover{
 background-color: rgb(185,182,185);
 color: white;
 border-radius: 5px;
@@ -67,6 +79,15 @@ max-height: 35px;
 max-width: 70px;
 }
 
+QPushButton#Resetten:hover{
+background-color: rgb(185,182,185);
+color: white;
+border-radius: 5px;
+min-height: 35px;
+min-width: 70px;
+max-height: 35px;
+max-width: 70px;
+}
 
 </string>
     </property>
@@ -91,6 +112,9 @@ max-width: 70px;
        <width>72</width>
        <height>37</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
      </property>
      <property name="text">
       <string>Beenden</string>
@@ -645,7 +669,18 @@ max-width: 100px;
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">QLabel#label_2{
+     <string notr="true">QTextBrowser#Output{
+background-color: rgb(237, 237, 237);
+color: black;
+border-radius: 5px;
+border: 1px solid black;
+min-height: 280px;
+min-width: 250px;
+max-height: 280px;
+max-width: 250px;
+}
+
+QLabel#Output{
 background-color: rgb(237, 237, 237);
 color: black;
 border-radius: 5px;
@@ -656,7 +691,7 @@ max-height: 280px;
 max-width: 250px;
 }</string>
     </property>
-    <widget class="QLabel" name="label_2">
+    <widget class="QTextBrowser" name="Output">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -664,12 +699,6 @@ max-width: 250px;
        <width>252</width>
        <height>282</height>
       </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
      </property>
     </widget>
    </widget>
