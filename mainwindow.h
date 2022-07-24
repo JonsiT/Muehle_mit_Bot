@@ -53,6 +53,9 @@ public:
     int brown_stones = 0;
     int black_stones = 0;
 
+    // Gegnerische Steinposition speichern
+    int bot_gegner;
+
     // Array für bewegungsfreiheit und bewegung_empty
     int array_be[24][4] = {
             { 1, 9, 24, 24 },

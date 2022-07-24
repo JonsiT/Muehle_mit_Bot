@@ -342,6 +342,7 @@ void MainWindow::Programm_2_Spieler(){
 
     if(count <= 17){
 
+        if(auswahl == 0){
         // Das ausgewaehlte Feld brown_stonesd mit einer Nummer versehen und vorerst fuer weitere Eingaben gesperrt
         if(zuege == 0){
             Status[number_1] = 1;
@@ -354,18 +355,38 @@ void MainWindow::Programm_2_Spieler(){
         // button vorerst außer Kraft setzen
         buttonSender_1->setEnabled(false);
 
-        // Setzt die Felder frei, die als naechstes angeclickt werden koennen
-        if(count == 17){
-            for(int o = 0; o <= 23; o++){
-                QPushButton *field_1 = findChild<QPushButton*>("Feld_" + QString::number(o));
-                    if(Status[o] == 1 && bewegungsfreiheit(o) == true){
-                        field_1->setEnabled(true);
-                        field_1->setStyleSheet("QPushButton { image: url(:/images/Stein_braun.png);background-color:none;min-height: 60px;max-height: 60px;min-width: 60px;max-width: 60px; border: 2px solid green}");
-                    }else{
-                        field_1->setEnabled(false);
-                    }
+        if(muehle(number_1) == true){
+            enable(Spieler_2);
+            auswahl++;
+        }else{
+            auswahl = 0;
+            enable(0);
+
+
+            // Setzt die Felder frei, die als naechstes angeclickt werden koennen
+            if(count == 17){
+                for(int o = 0; o <= 23; o++){
+                    QPushButton *field_1 = findChild<QPushButton*>("Feld_" + QString::number(o));
+                        if(Status[o] == 1 && bewegungsfreiheit(o) == true){
+                            field_1->setEnabled(true);
+                            field_1->setStyleSheet("QPushButton { image: url(:/images/Stein_braun.png);background-color:none;min-height: 60px;max-height: 60px;min-width: 60px;max-width: 60px; border: 2px solid green}");
+                        }else{
+                            field_1->setEnabled(false);
+                        }
+                }
             }
+
+
         }
+
+        }else if(auswahl == 1){
+        buttonSender_1->setStyleSheet("QPushButton { image: none}");
+        Status[number_1] = 0;
+        auswahl = 0;
+        enable(0);
+        }
+
+
     }
 
     /*
@@ -588,6 +609,7 @@ void MainWindow::Programm_1_Spieler(){
 
     if(count <= 16){
 
+        if(auswahl == 0){
         // Das ausgewaehlte Feld brown_stonesd mit einer Nummer versehen und vorerst fuer weitere Eingaben gesperrt
 
             Status[number_1] = 1;
@@ -596,6 +618,14 @@ void MainWindow::Programm_1_Spieler(){
 
         // button vorerst außer Kraft setzen
         buttonSender_1->setEnabled(false);
+
+        if(muehle(number_1) == true){
+            enable(Spieler_2);
+            auswahl++;
+        }else{
+            auswahl = 0;
+            enable(0);
+
 
         if(count == 16){
             for(int o = 0; o <= 23; o++){
@@ -628,8 +658,15 @@ void MainWindow::Programm_1_Spieler(){
                 }
             }
         }
+        }
 
-    }
+        }else if(auswahl == 1){
+                buttonSender_1->setStyleSheet("QPushButton { image: none}");
+                Status[number_1] = 0;
+                auswahl = 0;
+                enable(0);
+
+    }}
 
     /*
      * Stage 0 Ende
@@ -769,7 +806,7 @@ void MainWindow::Programm_1_Spieler(){
                     auswahl++;
                 }else{
                     auswahl = 0;
-                    freischalten();
+                    //freischalten();
 
                 }
 
@@ -779,7 +816,7 @@ void MainWindow::Programm_1_Spieler(){
                 buttonSender_1->setStyleSheet("QPushButton { image: none}");
                 Status[number_1] = 0;
                 auswahl = 0;
-                freischalten();
+                //freischalten();
                 if(state_gegner == 3){
                     Spielstand(zuege);
                 }
@@ -824,13 +861,17 @@ void MainWindow::Programm_1_Spieler(){
         // Wenn weniger als 17 Zuege gespielt wurden befinden wir uns noch in Stage 1
             if(count <= 17){
                 bot_anzahl = 0;
+                bot_gegner = 0;
                 int bot_array[23]{0};
-
+                int bot_gegner_array[23]{0};
                 // Abfragen, welche Felder frei sind
                 for(int o = 0; o <= 23; o++){
                     if(Status[o] == 0){
                         bot_array[bot_anzahl] = o;
                         bot_anzahl++;
+                    }else if(Status[o] == 1){
+                        bot_gegner_array[bot_gegner] = o;
+                        bot_gegner++;
                     }
                 }
 
@@ -844,6 +885,22 @@ void MainWindow::Programm_1_Spieler(){
 
                 QPushButton *field_1 = findChild<QPushButton*>("Feld_" + QString::number(bot_array[random_wert]));
                 field_1->setStyleSheet("QPushButton { image: url(:/images/Stein_schwarz.png);background-color:none;min-height: 60px;max-height: 60px;min-width: 60px;max-width: 60px}");
+
+                if(muehle(bot_array[random_wert]) == true){
+                    // bei Mühle wird gegnerischer Stein random gesucht und vernichtet ;)
+
+                    // Zufaellig ein Feld auswaehlen
+                    int random_gegner;
+                    int wi = bot_gegner;
+                    random_gegner = rand() % wi;
+
+                    // Feld mit Wert 2 und schwarzem Stein belegen
+                    Status[bot_gegner_array[random_gegner]] = 0;
+
+                    QPushButton *field_1 = findChild<QPushButton*>("Feld_" + QString::number(bot_gegner_array[random_gegner]));
+                    field_1->setStyleSheet("QPushButton { image: none}");
+
+                }
 
                 if(count==17){
                     freischalten_bot();
